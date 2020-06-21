@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
+import cors, { CorsOptions } from 'cors';
+import bodyParser, { Options } from 'body-parser';
 import { ApolloServer, IResolvers } from 'apollo-server-express';
 import { ApolloServerBase, Context, Config } from 'apollo-server-core';
 import { DocumentNode } from 'graphql';
@@ -24,15 +24,31 @@ class RecifeExpress {
   constructor(bodyParserConfig: any, corsConfig: any, homepage: string) {
     this.app = express();
 
-    this.app.use(bodyParser(bodyParserConfig));
+    // this.app.use(bodyParser(this.bodyParserTranslator(bodyParserConfig)));
 
-    if (cors) {
-      this.app.use(cors(corsConfig));
+    if (corsConfig && corsConfig.enabled) {
+      this.app.use(cors(this.corsTranslator(corsConfig)));
     }
 
     this.app.get('/', (_req, res) => {
       res.send(homepage);
     });
+  }
+
+  private corsTranslator(corsConfig: any): CorsOptions {
+    return {
+      origin: corsConfig.origin,
+      methods: corsConfig.allowMethods,
+      allowedHeaders: corsConfig.allowHeaders,
+      exposedHeaders: corsConfig.exposeHeaders,
+      credentials: corsConfig.credentials,
+      maxAge: corsConfig.maxAge
+    };
+  }
+
+  private bodyParserTranslator(bodyParserConfig: any): Options {
+    // to do
+    return bodyParserConfig;
   }
 
   createApolloServer({

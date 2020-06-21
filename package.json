@@ -1,11 +1,30 @@
 {
   "name": "recife-express",
-  "version": "1.0.0",
-  "main": "index.js",
+  "description": "Recife Express is a integration of recifejs with express",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
+  "repository": "https://github.com/recifejs/recife-express",
+  "homepage": "https://recifejs.org/",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc -p ."
   },
+  "bugs": {
+    "url": "https://github.com/recifejs/recife-express/issues"
+  },
+  "keywords": [
+    "recife",
+    "express",
+    "integration",
+    "framework",
+    "graphql",
+    "nodejs"
+  ],
   "dependencies": {
     "apollo-server-express": "^2.15.0"
   },
