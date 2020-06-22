@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request } from 'express';
 import cors, { CorsOptions } from 'cors';
 import bodyParser, { Options } from 'body-parser';
 import { ApolloServer, IResolvers } from 'apollo-server-express';
@@ -9,7 +9,7 @@ import { Server } from 'http';
 type CreateMiddlewareParams = {
   typeDefs: DocumentNode;
   resolvers: IResolvers;
-  context: Context;
+  context: (request: any) => Context;
   graphqlConfig: Config;
 };
 
@@ -61,7 +61,8 @@ class RecifeExpress {
       ...graphqlConfig,
       resolvers,
       typeDefs,
-      context
+      context: ({ req }: { req: Request }) =>
+        context({ method: req.method, url: req.url, header: req.header })
     });
 
     apolloServer.applyMiddleware({ app: this.app });
